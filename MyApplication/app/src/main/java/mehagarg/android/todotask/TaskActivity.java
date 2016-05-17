@@ -23,15 +23,15 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_task);
+        setContentView(R.layout.activity_main_task);
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
         if (fragment == null) {
-            if (getIntent().getData() != null) {
-                UUID id = (UUID) getIntent().getSerializableExtra(INTENT_ACTION);
-                fragment = TaskFragment.newInstance(id);
-                getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).addToBackStack(null).commit();
-            }
+
+            UUID id = (UUID) getIntent().getSerializableExtra(INTENT_ACTION);
+            fragment = TaskFragment.newInstance(id);
+            getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).addToBackStack(null).commit();
+
         }
     }
 }

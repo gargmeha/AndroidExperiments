@@ -77,7 +77,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 task.setDescription(s.toString());
-                
+
             }
 
             @Override
