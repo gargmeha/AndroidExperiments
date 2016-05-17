@@ -9,24 +9,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 import mehagarg.android.todotask.model.Task;
+import mehagarg.android.todotask.model.TaskList;
 
 /**
  * Created by meha on 5/17/16.
  */
-public class TaskFragment extends Fragment{
+public class TaskFragment extends Fragment {
 
     private EditText titleET;
     private EditText descriptionET;
     private Task task;
 
-    public static TaskFragment newInstance() {
+    public static final String INTENT_ACTION = "intent_action";
+
+    public static TaskFragment newInstance(UUID uuid) {
 
         Bundle args = new Bundle();
+        args.putSerializable(INTENT_ACTION, uuid);
 
         TaskFragment fragment = new TaskFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        UUID id = (UUID) getArguments().getSerializable(INTENT_ACTION);
+        task = TaskList.getInstance(getActivity()).getTaskDetails(id);
     }
 
     @Override
@@ -35,6 +48,8 @@ public class TaskFragment extends Fragment{
         titleET = (EditText) view.findViewById(R.id.et_title);
         descriptionET = (EditText) view.findViewById(R.id.et_description);
 
+        titleET.setText(task.getTitle());
+        descriptionET.setText(task.getDescription());
 
         titleET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -44,7 +59,7 @@ public class TaskFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                task.setTitle(titleET.getText().toString());
+                task.setTitle(s.toString());
             }
 
             @Override
@@ -61,7 +76,8 @@ public class TaskFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                task.setDescription(descriptionET.getText().toString());
+                task.setDescription(s.toString());
+                
             }
 
             @Override

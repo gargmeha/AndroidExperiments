@@ -1,5 +1,6 @@
 package mehagarg.android.todotask;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +38,7 @@ public class TaskListFragment extends Fragment {
 
         tasklist = TaskList.getInstance(getActivity());
 
-        recyclerView = new RecyclerView(getActivity());
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         taskAdapter = new TaskAdapter(tasklist);
@@ -47,7 +48,8 @@ public class TaskListFragment extends Fragment {
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
+                Intent i = TaskActivity.newIntent(getActivity(), tasklist.getTasks().get(position).getId());
+                startActivity(i);
             }
         });
 
@@ -85,7 +87,7 @@ public class TaskListFragment extends Fragment {
         @Override
         public TaskHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
-            View view = inflater.inflate(R.layout.fragment_item_layout, parent);
+            View view = inflater.inflate(R.layout.fragment_item_layout, null);
             TaskHolder holder = new TaskHolder(view);
             return holder;
         }
