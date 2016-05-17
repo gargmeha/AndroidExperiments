@@ -3,6 +3,7 @@ package mehagarg.android.todotask.model;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -42,6 +43,10 @@ public class TaskList {
 
     public int getCount() {
         return tasks.size();
+    }
+
+    public List<Task> getTasks(){
+        return tasks;
     }
 }
 

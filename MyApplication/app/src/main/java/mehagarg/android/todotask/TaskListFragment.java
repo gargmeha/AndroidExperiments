@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import mehagarg.android.todotask.model.Task;
 import mehagarg.android.todotask.model.TaskList;
 
 /**
@@ -46,7 +47,7 @@ public class TaskListFragment extends Fragment {
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                
+
             }
         });
 
@@ -59,10 +60,18 @@ public class TaskListFragment extends Fragment {
         private TextView titleTV;
         private TextView desciptionTV;
 
+        private Task task;
+
         public TaskHolder(View itemView) {
             super(itemView);
             titleTV = (TextView) itemView.findViewById(R.id.title_tv);
             desciptionTV = (TextView) itemView.findViewById(R.id.desc_tv);
+        }
+
+        public void bindTask(Task task) {
+            this.task = task;
+            titleTV.setText(task.getTitle());
+            desciptionTV.setText(task.getDescription());
         }
     }
 
@@ -83,12 +92,14 @@ public class TaskListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(TaskHolder holder, int position) {
+            Task task = taskList.getTasks().get(position);
+            holder.bindTask(task);
 
         }
 
         @Override
         public int getItemCount() {
-            return taskList.getCount();
+            return taskList.getTasks().size();
         }
     }
 
