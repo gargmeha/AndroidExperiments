@@ -9,9 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import mehagarg.android.todotask.model.Task;
 import mehagarg.android.todotask.model.TaskList;
 
 /**
@@ -46,6 +43,13 @@ public class TaskListFragment extends Fragment {
 
         recyclerView.setAdapter(taskAdapter);
 
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                
+            }
+        });
+
 
         return view;
     }
@@ -72,9 +76,9 @@ public class TaskListFragment extends Fragment {
         @Override
         public TaskHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
-            inflater.inflate(R.layout.fragment_item_layout, parent);
-
-            return null;
+            View view = inflater.inflate(R.layout.fragment_item_layout, parent);
+            TaskHolder holder = new TaskHolder(view);
+            return holder;
         }
 
         @Override
