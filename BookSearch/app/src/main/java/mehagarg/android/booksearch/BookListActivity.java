@@ -1,11 +1,13 @@
 package mehagarg.android.booksearch;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,10 +24,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -43,8 +50,48 @@ public class BookListActivity extends AppCompatActivity {
         ArrayList<Book> books = new ArrayList<>();
         adaptr = new BookAdaptr(this, books);
         listView.setAdapter(adaptr);
-
         fetchBooks("oscar wilde");
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences("settings", 0);
+        SharedPreferences.Editor sharedEditor = sharedPreferences.edit();
+        sharedEditor.apply();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putBoolean
+        editor.apply();
+
+
+// to access data
+        String coockieName = sharedPreferences.getString("cookieName", "missing");
+        String coockieNam2e = prefs.getString("cookieName", "missing");
+
+
+        try {
+            FileOutputStream fos = openFileOutput("filename", MODE_PRIVATE);
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos));
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(openFileInput("filename")));
+            String line;
+            StringBuffer buffer = new StringBuffer();
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+            String text = buffer.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
